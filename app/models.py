@@ -1,6 +1,7 @@
 from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, Date
 from sqlalchemy.orm import relationship
 from .database import Base
+import uuid
 
 class User(Base):
     __tablename__ = "users"
@@ -18,11 +19,11 @@ class User(Base):
 class Message(Base):
     __tablename__ = "messages"
 
-    id = Column(Integer, primary_key=True, index=True)
+    id = Column(String, primary_key=True, default=lambda: str(uuid.uuid4()))
     message = Column(String)
     timestamp = Column(DateTime)
     user_id = Column(Integer, ForeignKey('users.id'))
-    chat_id = Column(Integer, ForeignKey('chats.id'))
+    chat_id = Column(String, ForeignKey('chats.id'))
 
     user = relationship("User", back_populates="messages")
     chat = relationship("Chat", back_populates="messages")
@@ -30,7 +31,7 @@ class Message(Base):
 class Chat(Base):
     __tablename__ = "chats"
 
-    id = Column(Integer, primary_key=True, index=True)
+    id = Column(String, primary_key=True, index=True)
     name = Column(String, index=True)
 
     messages = relationship("Message", back_populates="chat")

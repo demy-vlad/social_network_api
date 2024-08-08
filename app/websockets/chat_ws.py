@@ -42,7 +42,7 @@ def update_messages(data: str, user_id: int, db: Session):
             message=data,
             timestamp=datetime.utcnow(),
             user_id=user_id,
-            chat_id=2
+            chat_id="chat2"
         )
     db.add(db_message)
     db.commit()

@@ -39,7 +39,7 @@ def extract_recipient_id(message: str) -> str:
 
 def update_messages(data: str, user_id: int, db: Session):
     db_message = Message(
-            content=data,
+            message=data,
             timestamp=datetime.utcnow(),
             user_id=user_id,
             chat_id=2

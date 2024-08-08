@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Application</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        #chat-container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            max-width: 600px;
+            margin: auto;
+        }
+        #message-list {
+            flex: 1;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            padding: 10px;
+        }
+        #message-form {
+            display: flex;
+        }
+        #message-input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+        }
+        #send-button {
+            padding: 10px;
+            border: none;
+            background-color: #007BFF;
+            color: white;
+            cursor: pointer;
+            border-radius: 3px;
+            margin-left: 10px;
+        }
+        #user-id-input {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="chat-container">
+        <div id="message-list"></div>
+        <form id="message-form">
+            <input type="text" id="user-id-input" placeholder="Enter your user ID" />
+            <input type="text" id="message-input" placeholder="Type a message..." />
+            <button type="button" id="send-button">Send</button>
+        </form>
+    </div>
+
+    <script>
+        const chatId = "2"; // ID чата, к которому подключаемся
+        const userIdInput = document.getElementById('user-id-input');
+        const messageInput = document.getElementById('message-input');
+        const sendButton = document.getElementById('send-button');
+        const messageList = document.getElementById('message-list');
+        let ws;
+
+        function connectWebSocket() {
+            const userId = userIdInput.value;
+            if (userId) {
+                // Закрыть старое соединение, если оно существует
+                if (ws) {
+                    ws.close();
+                }
+                ws = new WebSocket(`ws://localhost:8000/ws/chat/${chatId}/${userId}`);
+                ws.onopen = () => {
+                    console.log("WebSocket connection established.");
+                };
+                ws.onmessage = (event) => {
+                    const message = event.data;
+                    const messageElement = document.createElement('div');
+                    messageElement.textContent = message;
+                    messageList.appendChild(messageElement);
+                    messageList.scrollTop = messageList.scrollHeight; // Scroll to the bottom
+                };
+                ws.onerror = (error) => {
+                    console.error("WebSocket error: ", error);
+                };
+                ws.onclose = () => {
+                    console.log("WebSocket connection closed.");
+                };
+            } else {
+                alert("Please enter your user ID.");
+            }
+        }
+
+        sendButton.addEventListener('click', () => {
+            if (ws && messageInput.value) {
+                ws.send(messageInput.value);
+                messageInput.value = '';
+            }
+        });
+
+        messageInput.addEventListener('keypress', (event) => {
+            if (event.key === 'Enter') {
+                sendButton.click();
+            }
+        });
+
+        userIdInput.addEventListener('blur', connectWebSocket);
+    </script>
+</body>
+</html>

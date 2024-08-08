@@ -1,4 +1,4 @@
-from fastapi import WebSocket, WebSocketDisconnect, Depends
+from fastapi import WebSocket, WebSocketDisconnect
 from sqlalchemy.orm import Session
 from datetime import datetime
 
@@ -6,17 +6,13 @@ from .connection_manager import connection_manager
 from app.models import Message
 from app.database import SessionLocal
 
-from datetime import datetime
-from sqlalchemy.orm import Session
-from fastapi import WebSocket, Depends
-from .connection_manager import connection_manager
-from app.models import Message
-from app.database import get_db
 
 async def websocket_endpoint(
     websocket: WebSocket,
-    user_id: str,
+    user_id: str
 ):
+    # Создание сессии базы данных вручную
+    db = SessionLocal()
     await connection_manager.connect(user_id, websocket)
     try:
         while True:
@@ -26,14 +22,28 @@ async def websocket_endpoint(
             if recipient_id:
                 await connection_manager.send_message(recipient_id, f"Message from {user_id}: {data}")
             else:
+                update_messages(data, user_id, db)  # Передаем db в функцию update_messages
                 await connection_manager.broadcast(f"Message from {user_id}: {data}")
                 
     except WebSocketDisconnect:
         connection_manager.disconnect(user_id)
         await connection_manager.broadcast(f"User {user_id} left the chat")
+    finally:
+        db.close()  # Закрываем сессию базы данных
 
 def extract_recipient_id(message: str) -> str:
     parts = message.split(":", 1)
     if len(parts) == 2:
         return parts[0].strip()
     return ""
+
+def update_messages(data: str, user_id: int, db: Session):
+    db_message = Message(
+            content=data,
+            timestamp=datetime.utcnow(),
+            user_id=user_id,
+            chat_id=2
+        )
+    db.add(db_message)
+    db.commit()
+    db.refresh(db_message)

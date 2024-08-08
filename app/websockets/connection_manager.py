@@ -2,7 +2,9 @@
 
 from typing import Dict
 from fastapi import WebSocket
-
+from datetime import datetime
+from sqlalchemy.orm import Session
+from ..models import Message
 class ConnectionManager:
     def __init__(self):
         self.active_connections: Dict[str, WebSocket] = {}
@@ -23,6 +25,7 @@ class ConnectionManager:
     async def broadcast(self, message: str):
         for websocket in self.active_connections.values():
             await websocket.send_text(message)
+
 
 # Создаем экземпляр ConnectionManager
 connection_manager = ConnectionManager()

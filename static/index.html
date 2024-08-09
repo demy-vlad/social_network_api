@@ -304,11 +304,11 @@
                         const message = data.message;
                         const sender = data.userId;
                         console.log("Message received:", message); // Debugging message reception
-    
+                
                         const messageElement = document.createElement('div');
                         messageElement.className = 'message';
-                        messageElement.style.color = '#03a9f4'; // Фиксированный цвет для всех пользователей
-                        messageElement.innerHTML = `<strong>${sender}:</strong> ${message}`;
+                        <!-- messageElement.style.color = '#03a9f4'; // Фиксированный цвет для всех пользователей
+                        messageElement.innerHTML = `<strong>${sender}:</strong> ${message}`; -->
                         messageList.appendChild(messageElement);
                         messageList.scrollTop = messageList.scrollHeight; // Scroll to the bottom
                     } catch (e) {

@@ -3,36 +3,134 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chat Application</title>
+    <title>Real-Time Chat Application - Connect & Communicate Instantly</title>
+
+    <!-- Meta Description for SEO -->
+    <meta name="description" content="Experience seamless communication with our real-time chat application. Connect, chat, and share instantly with friends or colleagues. Start chatting now!">
+
+    <!-- Meta Keywords for SEO -->
+    <meta name="keywords" content="real-time chat, online chat, instant messaging, web chat, communication tool, chat application">
+
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="Real-Time Chat Application - Connect & Communicate Instantly">
+    <meta property="og:description" content="Join our real-time chat application for instant communication with friends or colleagues. Start chatting now!">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.example.com/chat">
+    <meta property="og:image" content="https://www.example.com/images/chat-thumbnail.jpg">
+
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Real-Time Chat Application - Connect & Communicate Instantly">
+    <meta name="twitter:description" content="Join our real-time chat application for instant communication with friends or colleagues. Start chatting now!">
+    <meta name="twitter:image" content="https://www.example.com/images/chat-thumbnail.jpg">
+
+    <!-- Schema.org Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "url": "https://www.example.com/",
+      "name": "Real-Time Chat Application",
+      "description": "Experience seamless communication with our real-time chat application. Connect, chat, and share instantly with friends or colleagues.",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://www.example.com/search?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
+
     <!-- Bootstrap CSS -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
+            background-color: #f8f9fa;
         }
+
         #chat-container {
             display: flex;
+            justify-content: flex-end;
             flex-direction: column;
             height: 100vh;
             max-width: 600px;
             margin: auto;
+            padding: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background-color: #ffffff;
         }
+
+        /* Контейнер для выбора эмодзи */
+        #emoji-container {
+            display: flex;
+            flex-wrap: nowrap; /* Отображение в одну строку */
+            overflow-x: auto; /* Позволяет прокручивать, если эмодзи не помещаются */
+            margin-bottom: 10px;
+        }
+
+        /* Стили для эмодзи-блоков */
+        .emoji-block {
+            width: 59px;
+            height: 40px;
+            margin-right: 5px;
+            border: 2px solid #03A9F4;
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            cursor: pointer;
+            flex-shrink: 0; /* Предотвращает уменьшение размера блока при переносе */
+        }
+
+        /* Стили для текстового поля */
+        #message-input {
+            resize: vertical;
+            min-height: 50px;
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+
+        #send-button {
+            margin-top: 10px;
+            font-size: 16px;
+            padding: 10px;
+            border-radius: 8px;
+        }
+
         #message-list {
             flex: 1;
             overflow-y: auto;
             border: 1px solid #ddd;
+            border-radius: 5px;
             padding: 10px;
+            background-color: #f8f9fa;
         }
+
         #message-form {
             display: flex;
             flex-direction: column;
+            margin-top: 10px;
         }
+
         #message-input {
             resize: vertical;
             min-height: 100px;
+            padding: 10px;
+            font-size: 16px;
         }
+
+        #send-button {
+            margin-top: 10px;
+            font-size: 16px;
+            padding: 10px;
+        }
+
         #popup {
             display: none;
             position: fixed;
@@ -45,10 +143,15 @@
             padding: 20px;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
             z-index: 1000;
+            width: 80%;
+            max-width: 400px;
         }
+
         #popup button {
             padding: 10px 20px;
+            width: 100%;
         }
+
         #overlay {
             display: none;
             position: fixed;
@@ -59,21 +162,77 @@
             background: rgba(0,0,0,0.5);
             z-index: 999;
         }
+
+        @media (max-width: 768px) {
+            #chat-container {
+                max-width: 100%;
+                height: 100vh;
+                margin: 0;
+                padding: 10px;
+            }
+
+            #message-input {
+                font-size: 14px;
+                min-height: 80px;
+            }
+
+            #send-button {
+                font-size: 14px;
+                padding: 8px;
+            }
+
+            #popup {
+                width: 90%;
+                max-width: 350px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            #chat-container {
+                padding: 5px;
+            }
+
+            #message-input {
+                font-size: 12px;
+                min-height: 60px;
+            }
+
+            #send-button {
+                font-size: 12px;
+                padding: 6px;
+            }
+
+            #popup {
+                width: 95%;
+                max-width: 300px;
+            }
+        }
     </style>
 </head>
 <body>
     <div id="overlay"></div>
     <div id="popup" class="alert alert-info">
-        <p>Привет!</p>
+        <p>Welcome to the Real-Time Chat Application!</p>
         <input type="text" id="user-id-input" class="form-control mb-3" placeholder="Enter your name" />
-        <button id="ok-button" class="btn btn-primary">ОК</button>
+        <button id="ok-button" class="btn btn-primary">Start Chatting</button>
     </div>
     
+    
     <div id="chat-container">
-        <div id="message-list" class="border rounded p-3 mb-2 bg-light"></div>
+        <div id="emoji-container">
+            <div class="emoji-block">😊</div>
+            <div class="emoji-block">😂</div>
+            <div class="emoji-block">😍</div>
+            <div class="emoji-block">😎</div>
+            <div class="emoji-block">😉</div>
+            <div class="emoji-block">😭</div>
+            <div class="emoji-block">😡</div>
+            <div class="emoji-block">👍</div>
+            <div class="emoji-block">🎉</div>
+        </div>
         <form id="message-form" class="form-group">
-            <textarea id="message-input" class="form-control mb-2" placeholder="Type a message..."></textarea>
-            <button type="button" id="send-button" class="btn btn-primary">Send</button>
+            <textarea id="message-input" class="form-control mb-2" placeholder="Type your message..."></textarea>
+            <button type="button" id="send-button" class="btn btn-primary mt-2">Send</button>
         </form>
     </div>
 
@@ -83,9 +242,19 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
     <script>
-        const chatId = "chat1"; // ID чата, к которому подключаемся (без символа '#')
-        const userIdInput = document.getElementById('user-id-input');
+        const emojiBlocks = document.querySelectorAll('.emoji-block');
         const messageInput = document.getElementById('message-input');
+
+        // Добавляем функциональность выбора эмодзи
+        emojiBlocks.forEach(block => {
+            block.addEventListener('click', () => {
+                messageInput.value += block.textContent;
+            });
+        });
+
+
+        const chatId = "chat1"; // ID of the chat to connect to (without the '#' symbol)
+        const userIdInput = document.getElementById('user-id-input');
         const sendButton = document.getElementById('send-button');
         const messageList = document.getElementById('message-list');
         const popup = document.getElementById('popup');
@@ -96,7 +265,6 @@
         function connectWebSocket() {
             const userId = userIdInput.value;
             if (userId) {
-                // Закрыть старое соединение, если оно существует
                 if (ws) {
                     ws.close();
                 }
@@ -140,13 +308,11 @@
 
         userIdInput.addEventListener('blur', connectWebSocket);
 
-        // Display the popup when the page loads
         window.addEventListener('load', () => {
             popup.style.display = 'block';
             overlay.style.display = 'block';
         });
 
-        // Close the popup when the OK button is clicked
         okButton.addEventListener('click', () => {
             popup.style.display = 'none';
             overlay.style.display = 'none';

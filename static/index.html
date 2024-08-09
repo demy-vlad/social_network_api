@@ -141,6 +141,7 @@
                 
                         console.log("Message received:", message); // Debugging message reception
                 
+                        // Отображаем входящие сообщения
                         const messageElement = document.createElement('div');
                         messageElement.className = 'message';
                         messageElement.innerHTML = `<strong>${sender}:</strong> ${message}`;
@@ -161,13 +162,26 @@
             }
         }
         
+        function displayMessage(message, sender) {
+            const messageElement = document.createElement('div');
+            messageElement.className = 'message';
+            messageElement.innerHTML = `<strong>${sender}:</strong> ${message}`;
+            messageList.appendChild(messageElement);
+            messageList.scrollTop = messageList.scrollHeight; // Scroll to the bottom
+        }
+        
         sendButton.addEventListener('click', () => {
+            const userId = userIdInput.value;
             if (ws && messageInput.value) {
                 if (ws.readyState === WebSocket.OPEN) { // Check if WebSocket is open
                     console.log("Sending message:", messageInput.value); // Debugging message sending
+                    
+                    // Отображаем отправленное сообщение немедленно
+                    displayMessage(messageInput.value, userId);
+                    
                     const messageData = {
                         message: messageInput.value,
-                        userId: userIdInput.value
+                        userId: userId
                     };
                     ws.send(JSON.stringify(messageData));
                     messageInput.value = '';
@@ -198,6 +212,7 @@
             overlay.style.display = 'none';
         });
     </script>
+    
     
 </body>
 </html>

@@ -82,6 +82,7 @@
             font-size: 24px;
             justify-content: space-around;
             padding: 1px 0px 1px 1px;
+            margin: 10px;
         }
 
         .emoji-block:active {
@@ -117,7 +118,6 @@
         #message-form {
             display: flex;
             flex-direction: column;
-            margin-top: 10px;
         }
 
         #message-input {
@@ -243,6 +243,7 @@
     </div>
     
     <div id="chat-container">
+        <div id="message-list"></div> <!-- Добавлено для отображения сообщений -->
         <div id="emoji-container">
             <div type="button" class="emoji-block">😊</div>
             <div type="button" class="emoji-block">😂</div>
@@ -254,7 +255,6 @@
             <div type="button" class="emoji-block">👍</div>
             <div type="button" class="emoji-block">🎉</div>
         </div>
-        <div id="message-list"></div> <!-- Добавлено для отображения сообщений -->
         <form id="message-form" class="form-group">
             <textarea id="message-input" class="form-control mb-2" placeholder="Type your message..."></textarea>
             <button type="button" id="send-button" class="btn btn-primary mt-2">Send</button>

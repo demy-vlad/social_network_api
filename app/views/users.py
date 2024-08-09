@@ -15,6 +15,24 @@ class UserCreate(BaseModel):
     photo: str
     email: str
     hashed_password: str
+    chatting: bool
+    dating: bool
+    gaming: bool
+    vaping: bool
+    single: bool
+    relationships: bool
+    married: bool
+    divorced: bool
+    travel: bool
+    sports: bool
+    music: bool
+    books: bool
+    movies: bool
+    games: bool
+    cook: bool
+    work: bool
+    family: bool
+    animals: bool
 
 # Зависимость для получения сессии базы данных
 def get_db():
@@ -42,7 +60,25 @@ def create_user(user: UserCreate, db: Session = Depends(get_db)):
         gender=user.gender,
         photo=user.photo,
         email=user.email,
-        hashed_password=user.hashed_password
+        hashed_password=user.hashed_password,
+        chatting = user.chatting,
+        dating = user.dating,
+        gaming = user.gaming,
+        vaping = user.vaping,
+        single = user.single,
+        relationships = user.relationships,
+        married = user.married,
+        divorced = user.divorced,
+        travel = user.travel,
+        sports = user.sports,
+        music = user.music,
+        books = user.books,
+        movies = user.movies,
+        games = user.games,
+        cook = user.cook,
+        work = user.work,
+        family = user.family,
+        animals = user.animals,
     )
     
     db.add(db_user)

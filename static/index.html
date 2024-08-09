@@ -72,18 +72,20 @@
         }
 
         /* Стили для эмодзи-блоков */
-        .emoji-block {
-            width: 59px;
-            height: 40px;
+        .emoji-block{
+            width: 78px;
+            height: 41px;
             margin-right: 5px;
             border: 2px solid #03A9F4;
             border-radius: 30px;
             display: flex;
-            align-items: center;
-            justify-content: center;
             font-size: 24px;
-            cursor: pointer;
-            flex-shrink: 0; /* Предотвращает уменьшение размера блока при переносе */
+            justify-content: space-around;
+            padding: 1px 0px 1px 1px;
+        }
+
+        .emoji-block:active {
+            background-color: #f5fcff;
         }
 
         /* Стили для текстового поля */
@@ -164,6 +166,18 @@
         }
 
         @media (max-width: 768px) {
+            .emoji-block{
+                width: 78px;
+                height: 41px;
+                margin-right: 5px;
+                border: 2px solid #03A9F4;
+                border-radius: 30px;
+                display: flex;
+                font-size: 24px;
+                justify-content: space-around;
+                padding: 1px 7px 1px 1px;
+            }
+
             #chat-container {
                 max-width: 100%;
                 height: 100vh;
@@ -188,6 +202,17 @@
         }
 
         @media (max-width: 480px) {
+            .emoji-block{
+                width: 41px;
+                height: 41px;
+                margin-right: 5px;
+                border: 2px solid #03A9F4;
+                border-radius: 30px;
+                display: flex;
+                font-size: 24px;
+                justify-content: space-around;
+                padding: 1px 5px 1px 1px;
+            }
             #chat-container {
                 padding: 5px;
             }
@@ -220,15 +245,15 @@
     
     <div id="chat-container">
         <div id="emoji-container">
-            <div class="emoji-block">😊</div>
-            <div class="emoji-block">😂</div>
-            <div class="emoji-block">😍</div>
-            <div class="emoji-block">😎</div>
-            <div class="emoji-block">😉</div>
-            <div class="emoji-block">😭</div>
-            <div class="emoji-block">😡</div>
-            <div class="emoji-block">👍</div>
-            <div class="emoji-block">🎉</div>
+            <div type="button" class="emoji-block">😊</div>
+            <div type="button" class="emoji-block">😂</div>
+            <div type="button" class="emoji-block">😍</div>
+            <div type="button" class="emoji-block">😎</div>
+            <div type="button" class="emoji-block">😉</div>
+            <div type="button" class="emoji-block">😭</div>
+            <div type="button" class="emoji-block">😡</div>
+            <div type="button" class="emoji-block">👍</div>
+            <div type="button" class="emoji-block">🎉</div>
         </div>
         <form id="message-form" class="form-group">
             <textarea id="message-input" class="form-control mb-2" placeholder="Type your message..."></textarea>

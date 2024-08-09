@@ -322,19 +322,23 @@
                     console.log("WebSocket connection closed.");
                 };
             } else {
-                alert("Please enter your user ID.");
+                alert("Please enter your user name!");
             }
         }
     
         sendButton.addEventListener('click', () => {
             if (ws && messageInput.value) {
-                console.log("Sending message:", messageInput.value); // Debugging message sending
-                const messageData = {
-                    message: messageInput.value,
-                    userId: userIdInput.value
-                };
-                ws.send(JSON.stringify(messageData));
-                messageInput.value = '';
+                if (ws.readyState === WebSocket.OPEN) { // Check if WebSocket is open
+                    console.log("Sending message:", messageInput.value); // Debugging message sending
+                    const messageData = {
+                        message: messageInput.value,
+                        userId: userIdInput.value
+                    };
+                    ws.send(JSON.stringify(messageData));
+                    messageInput.value = '';
+                } else {
+                    console.warn("WebSocket is not open. Cannot send message.");
+                }
             }
         });
     
@@ -359,6 +363,7 @@
             overlay.style.display = 'none';
         });
     </script>
+    
     
     
 </body>

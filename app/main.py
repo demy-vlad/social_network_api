@@ -1,4 +1,4 @@
-from fastapi import FastAPI, WebSocket
+from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 
@@ -23,24 +23,21 @@ logging.basicConfig(level=logging.DEBUG)
 app.include_router(message_router)
 
 @app.websocket("/ws/chat/{chat_id}/{user_id}")
-async def websocket_endpoint(websocket: WebSocket, user_id: str, chat_id: str):
+async def websocket_endpoint(websocket: WebSocket, chat_id: str, user_id: str):
     await websocket.accept()
-    while True:
-        data = await websocket.receive_text()
-        logging.debug(f"Data received: {data}")
-        try:
-            message_data = json.loads(data)
-            message = message_data.get('message')
-            user_id = message_data.get('userId')
-            
-            logging.debug(f"Message: {message}, User ID: {user_id}")
-            
-            await websocket.send_text(json.dumps({
-                'message': message,
-                'userId': user_id
-            }))
-        except json.JSONDecodeError:
-            logging.error("Error decoding JSON")
+    logging.info(f"User {user_id} connected to chat {chat_id}")
+    try:
+        while True:
+            data = await websocket.receive_text()
+            logging.info(f"Received message: {data} from User ID: {user_id}")
+            # Broadcast message to all clients
+            await websocket.send_text(f"Message from {user_id}: {data}")
+    except WebSocketDisconnect as e:
+        logging.error(f"WebSocket disconnected: {e}")
+        # Handle disconnection
+    except Exception as e:
+        logging.error(f"Unexpected error: {e}")
+        # Handle other unexpected errors
 
 # Define a route for the root URL
 @app.get("/", response_class=FileResponse)

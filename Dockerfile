@@ -1,20 +1,21 @@
-# Базовый образ Python
+# Use an appropriate base image
 FROM python:3.11-slim
 
-# Устанавливаем рабочую директорию
+# Set working directory
 WORKDIR /app
 
-# Копируем файл зависимостей
+# Copy dependency file
 COPY requirements.txt .
 
-# Устанавливаем зависимости
+# Install dependencies
+RUN python -m pip install --upgrade pip
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Копируем все файлы приложения в контейнер
+# Copy application files and static files
 COPY . .
 
-# Экспонируем порт
-EXPOSE 5000
+# Expose port 80
+EXPOSE 80
 
-# Команда для запуска Flask-приложения
-CMD ["flask", "run", "--host=0.0.0.0"]
+# Command to run the application with Uvicorn
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "80", "--reload"]

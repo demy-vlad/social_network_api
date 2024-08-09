@@ -9,7 +9,8 @@ from app.database import SessionLocal
 
 async def websocket_endpoint(
     websocket: WebSocket,
-    user_id: str
+    user_id: str,
+    chat_id: str,
 ):
     # Создание сессии базы данных вручную
     db = SessionLocal()
@@ -20,10 +21,10 @@ async def websocket_endpoint(
             recipient_id = extract_recipient_id(data)
 
             if recipient_id:
-                await connection_manager.send_message(recipient_id, f"Message from {user_id}: {data}")
+                await connection_manager.send_message(recipient_id, f"{user_id}: {data}")
             else:
-                update_messages(data, user_id, db)  # Передаем db в функцию update_messages
-                await connection_manager.broadcast(f"Message from {user_id}: {data}")
+                update_messages(data, user_id, db, chat_id)  # Передаем db в функцию update_messages
+                await connection_manager.broadcast(f"{user_id}: {data}")
                 
     except WebSocketDisconnect:
         connection_manager.disconnect(user_id)
@@ -37,12 +38,12 @@ def extract_recipient_id(message: str) -> str:
         return parts[0].strip()
     return ""
 
-def update_messages(data: str, user_id: int, db: Session):
+def update_messages(data: str, user_id: str, db: Session, chat_id: str):
     db_message = Message(
             message=data,
             timestamp=datetime.utcnow(),
             user_id=user_id,
-            chat_id="chat2"
+            chat_id=chat_id
         )
     db.add(db_message)
     db.commit()

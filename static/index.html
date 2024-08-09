@@ -5,18 +5,40 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Real-Time Chat Application - Connect & Communicate Instantly</title>
 
-    <!-- Meta tags for SEO -->
+    <!-- Meta Description for SEO -->
     <meta name="description" content="Experience seamless communication with our real-time chat application. Connect, chat, and share instantly with friends or colleagues. Start chatting now!">
+
+    <!-- Meta Keywords for SEO -->
     <meta name="keywords" content="real-time chat, online chat, instant messaging, web chat, communication tool, chat application">
+
+    <!-- Open Graph Meta Tags -->
     <meta property="og:title" content="Real-Time Chat Application - Connect & Communicate Instantly">
     <meta property="og:description" content="Join our real-time chat application for instant communication with friends or colleagues. Start chatting now!">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://www.example.com/chat">
     <meta property="og:image" content="https://www.example.com/images/chat-thumbnail.jpg">
+
+    <!-- Twitter Card Meta Tags -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Real-Time Chat Application - Connect & Communicate Instantly">
     <meta name="twitter:description" content="Join our real-time chat application for instant communication with friends or colleagues. Start chatting now!">
     <meta name="twitter:image" content="https://www.example.com/images/chat-thumbnail.jpg">
+
+    <!-- Schema.org Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "url": "https://www.example.com/",
+      "name": "Real-Time Chat Application",
+      "description": "Experience seamless communication with our real-time chat application. Connect, chat, and share instantly with friends or colleagues.",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://www.example.com/search?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
 
     <!-- Bootstrap CSS -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
@@ -41,15 +63,15 @@
             background-color: #ffffff;
         }
 
-        /* Emoji picker container */
+        /* Container for emoji selection */
         #emoji-container {
             display: flex;
-            flex-wrap: nowrap;
-            overflow-x: auto;
+            flex-wrap: nowrap; /* Display in a single row */
+            overflow-x: auto; /* Allows scrolling if emojis don't fit */
             margin-bottom: 10px;
         }
 
-        /* Emoji block styling */
+        /* Styles for emoji blocks */
         .emoji-block{
             width: 78px;
             height: 41px;
@@ -66,7 +88,7 @@
             background-color: #f5fcff;
         }
 
-        /* Text area styling */
+        /* Styles for message input */
         #message-input {
             resize: vertical;
             min-height: 50px;
@@ -83,7 +105,6 @@
             border-radius: 8px;
         }
 
-        /* Message list container */
         #message-list {
             flex: 1;
             overflow-y: auto;
@@ -94,7 +115,12 @@
             margin-bottom: 10px;
         }
 
-        /* Popup styling */
+        #message-form {
+            display: flex;
+            flex-direction: column;
+            margin-top: 10px;
+        }
+
         #popup {
             display: none;
             position: fixed;
@@ -128,7 +154,7 @@
         }
 
         @media (max-width: 768px) {
-            .emoji-block {
+            .emoji-block{
                 width: 78px;
                 height: 41px;
                 margin-right: 5px;
@@ -164,7 +190,7 @@
         }
 
         @media (max-width: 480px) {
-            .emoji-block {
+            .emoji-block{
                 width: 41px;
                 height: 41px;
                 margin-right: 5px;
@@ -175,7 +201,6 @@
                 justify-content: space-around;
                 padding: 1px 5px 1px 1px;
             }
-
             #chat-container {
                 padding: 5px;
             }
@@ -205,6 +230,7 @@
         <button id="ok-button" class="btn btn-primary">Start Chatting</button>
     </div>
     
+    
     <div id="chat-container">
         <div id="emoji-container">
             <div type="button" class="emoji-block">😊</div>
@@ -217,10 +243,7 @@
             <div type="button" class="emoji-block">👍</div>
             <div type="button" class="emoji-block">🎉</div>
         </div>
-        
-        <!-- Message list where messages will be displayed -->
         <div id="message-list"></div>
-
         <form id="message-form" class="form-group">
             <textarea id="message-input" class="form-control mb-2" placeholder="Type your message..."></textarea>
             <button type="button" id="send-button" class="btn btn-primary mt-2">Send</button>
@@ -236,88 +259,95 @@
         const emojiBlocks = document.querySelectorAll('.emoji-block');
         const messageInput = document.getElementById('message-input');
         const messageList = document.getElementById('message-list');
-    
-        // Emoji selection functionality
+        const sendButton = document.getElementById('send-button');
+        let websocket;
+
+        // Add emoji to the input when clicked
         emojiBlocks.forEach(block => {
             block.addEventListener('click', () => {
                 messageInput.value += block.textContent;
             });
         });
-    
-        const chatId = "chat1"; // Chat ID
-        const userIdInput = document.getElementById('user-id-input');
-        const sendButton = document.getElementById('send-button');
-        const popup = document.getElementById('popup');
-        const overlay = document.getElementById('overlay');
-        const okButton = document.getElementById('ok-button');
-        let ws;
-    
-        function connectWebSocket() {
-            const userId = userIdInput.value;
-            if (userId) {
-                if (ws) {
-                    ws.close();
-                }
-    
-                ws = new WebSocket(`ws://${window.location.host}/ws/chat/${chatId}/${userId}`);
-    
-                ws.onopen = () => {
-                    console.log("WebSocket connection established.");
-                };
-    
-                ws.onmessage = (event) => {
-                    console.log("Raw message data received:", event.data);  // Log the raw data
-    
-                    try {
-                        const data = JSON.parse(event.data);
-                        const message = data.message;
-                        const sender = data.userId;
-    
-                        console.log("Parsed message data:", data);  // Log parsed data
-    
-                        // Create a new message element
-                        const messageElement = document.createElement('div');
-                        messageElement.className = 'message';
-                        messageElement.innerHTML = `<strong>${sender}:</strong> ${message}`;
-    
-                        // Append the new message to the message list
-                        messageList.appendChild(messageElement);
-    
-                        // Scroll the chat to the bottom
-                        messageList.scrollTop = messageList.scrollHeight;
-                    } catch (e) {
-                        console.error("Error parsing message data:", e);
-                    }
-                };
-    
-                ws.onclose = () => {
-                    console.log("WebSocket connection closed.");
-                };
+
+        // Show popup on page load
+        document.addEventListener("DOMContentLoaded", () => {
+            document.getElementById("overlay").style.display = "block";
+            document.getElementById("popup").style.display = "block";
+        });
+
+        document.getElementById("ok-button").addEventListener("click", () => {
+            const userId = document.getElementById("user-id-input").value;
+            if (userId.trim() === "") {
+                alert("Please enter your name to continue.");
+                return;
             }
+            connectWebSocket(userId);
+            document.getElementById("overlay").style.display = "none";
+            document.getElementById("popup").style.display = "none";
+        });
+
+        function connectWebSocket(userId) {
+            const wsScheme = window.location.protocol === "https:" ? "wss" : "ws";
+            const wsUrl = `${wsScheme}://${window.location.host}/ws/chat/chat1/${userId}`;
+            websocket = new WebSocket(wsUrl);
+
+            websocket.onopen = function(event) {
+                console.log("WebSocket connection established.");
+            };
+
+            websocket.onmessage = function(event) {
+                try {
+                    const messageData = JSON.parse(event.data);
+                    displayMessage(messageData.message, messageData.user_id);
+                } catch (error) {
+                    console.error("Error parsing message data:", error);
+                }
+            };
+
+            websocket.onclose = function(event) {
+                console.log("WebSocket connection closed:", event);
+            };
+
+            websocket.onerror = function(event) {
+                console.error("WebSocket error observed:", event);
+            };
         }
-    
+
+        function displayMessage(message, userId) {
+            const messageElement = document.createElement('div');
+            messageElement.textContent = `${userId}: ${message}`;
+            messageElement.classList.add('alert', 'alert-secondary');
+            messageList.appendChild(messageElement);
+            messageList.scrollTop = messageList.scrollHeight;
+        }
+
         sendButton.addEventListener('click', () => {
             const message = messageInput.value.trim();
-            const userId = userIdInput.value;
-            if (message !== "") {
-                const messageData = {
+            if (message && websocket.readyState === WebSocket.OPEN) {
+                const userId = document.getElementById("user-id-input").value;
+                const messagePayload = JSON.stringify({
                     message: message,
                     userId: userId
-                };
-                ws.send(JSON.stringify(messageData));
+                });
+                websocket.send(messagePayload);
                 messageInput.value = '';
             }
         });
-    
-        okButton.addEventListener('click', () => {
-            popup.style.display = 'none';
-            overlay.style.display = 'none';
-            connectWebSocket();
+
+        // Handle pressing Enter to send the message
+        messageInput.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendButton.click();
+            }
         });
-    
-        document.addEventListener('DOMContentLoaded', () => {
-            popup.style.display = 'block';
-            overlay.style.display = 'block';
+
+        // Handle pressing Enter in the popup
+        document.getElementById("user-id-input").addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                document.getElementById("ok-button").click();
+            }
         });
     </script>
 </body>

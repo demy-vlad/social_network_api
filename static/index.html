@@ -242,7 +242,6 @@
         <button id="ok-button" class="btn btn-primary">Start Chatting</button>
     </div>
     
-    
     <div id="chat-container">
         <div id="emoji-container">
             <div type="button" class="emoji-block">😊</div>
@@ -255,6 +254,7 @@
             <div type="button" class="emoji-block">👍</div>
             <div type="button" class="emoji-block">🎉</div>
         </div>
+        <div id="message-list"></div> <!-- Добавлено для отображения сообщений -->
         <form id="message-form" class="form-group">
             <textarea id="message-input" class="form-control mb-2" placeholder="Type your message..."></textarea>
             <button type="button" id="send-button" class="btn btn-primary mt-2">Send</button>
@@ -307,6 +307,7 @@
                 
                         const messageElement = document.createElement('div');
                         messageElement.className = 'message';
+                        messageElement.innerHTML = `<strong>${sender}:</strong> ${message}`;
                         messageList.appendChild(messageElement);
                         messageList.scrollTop = messageList.scrollHeight; // Scroll to the bottom
                     } catch (e) {
@@ -360,9 +361,6 @@
             popup.style.display = 'none';
             overlay.style.display = 'none';
         });
-    </script>
-    
-    
-    
+    </script> 
 </body>
 </html>

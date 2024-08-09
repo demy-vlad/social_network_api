@@ -293,7 +293,7 @@
                 if (ws) {
                     ws.close();
                 }
-                ws = new WebSocket(`ws://localhost:80/ws/chat/${chatId}/${userId}`);
+                ws = new WebSocket(`ws://31.42.189.112:80/ws/chat/${chatId}/${userId}`);
                 ws.onopen = () => {
                     console.log("WebSocket connection established.");
                 };

@@ -30,14 +30,12 @@ async def websocket_endpoint(websocket: WebSocket, chat_id: str, user_id: str):
         while True:
             data = await websocket.receive_text()
             logging.info(f"Received message: {data} from User ID: {user_id}")
-            # Broadcast message to all clients
+            # Отправка сообщения всем клиентам
             await websocket.send_text(f"Message from {user_id}: {data}")
     except WebSocketDisconnect as e:
         logging.error(f"WebSocket disconnected: {e}")
-        # Handle disconnection
     except Exception as e:
         logging.error(f"Unexpected error: {e}")
-        # Handle other unexpected errors
 
 # Define a route for the root URL
 @app.get("/", response_class=FileResponse)

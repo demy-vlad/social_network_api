@@ -118,10 +118,13 @@
                     ws.close();
                 }
                 const protocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
-                ws = new WebSocket(`${protocol}//${location.host}/ws/chat/${userId}`);
+                const wsUrl = `${protocol}//${location.host}/ws/chat/${userId}`;
+                ws = new WebSocket(wsUrl);
+                
                 ws.onopen = () => {
                     console.log("WebSocket connection established.");
                 };
+
                 ws.onmessage = (event) => {
                     try {
                         const data = JSON.parse(event.data);
@@ -134,14 +137,16 @@
                         messageElement.className = 'message';
                         messageElement.innerHTML = `<strong>${sender}:</strong> ${message}`;
                         messageList.appendChild(messageElement);
-                        messageList.scrollTop = messageList.scrollHeight; // Scroll to the bottom
+                        messageList.scrollTop = messageList.scrollHeight;
                     } catch (e) {
                         console.error("Error parsing message data:", e);
                     }
                 };
+
                 ws.onerror = (error) => {
                     console.error("WebSocket error: ", error);
                 };
+
                 ws.onclose = () => {
                     console.log("WebSocket connection closed.");
                 };
@@ -156,12 +161,11 @@
                     const message = messageInput.value;
                     console.log("Sending message:", message);
 
-                    // Display the sent message immediately
                     const messageElement = document.createElement('div');
                     messageElement.className = 'message';
                     messageElement.innerHTML = `<strong>${userIdInput.value}:</strong> ${message}`;
                     messageList.appendChild(messageElement);
-                    messageList.scrollTop = messageList.scrollHeight; // Scroll to the bottom
+                    messageList.scrollTop = messageList.scrollHeight;
 
                     const messageData = {
                         message: message,

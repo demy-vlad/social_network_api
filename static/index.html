@@ -267,18 +267,27 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
     <script>
+        // Функция для генерации случайного цвета для пользователя
+        function generateColorForUser(userId) {
+            const colors = [
+                '#FF6347', '#4682B4', '#32CD32', '#FFD700', '#8A2BE2',
+                '#FF1493', '#00CED1', '#FF4500', '#2E8B57', '#D2691E'
+            ];
+            const index = userId.length % colors.length;
+            return colors[index];
+        }
+    
         const emojiBlocks = document.querySelectorAll('.emoji-block');
         const messageInput = document.getElementById('message-input');
-
+    
         // Добавляем функциональность выбора эмодзи
         emojiBlocks.forEach(block => {
             block.addEventListener('click', () => {
                 messageInput.value += block.textContent;
             });
         });
-
-
-        const chatId = "chat1"; // ID of the chat to connect to (without the '#' symbol)
+    
+        const chatId = "chat1"; // ID чата
         const userIdInput = document.getElementById('user-id-input');
         const sendButton = document.getElementById('send-button');
         const messageList = document.getElementById('message-list');
@@ -286,22 +295,29 @@
         const overlay = document.getElementById('overlay');
         const okButton = document.getElementById('ok-button');
         let ws;
-
+    
         function connectWebSocket() {
             const userId = userIdInput.value;
             if (userId) {
                 if (ws) {
                     ws.close();
                 }
-                ws = new WebSocket(`ws://g-nix.tech/ws/chat/${chatId}/${userId}`);
+                // Определение протокола для WebSocket
+                const protocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+                ws = new WebSocket(`${protocol}//${location.host}/ws/chat/${chatId}/${userId}`);
                 ws.onopen = () => {
                     console.log("WebSocket connection established.");
                 };
                 ws.onmessage = (event) => {
-                    const message = event.data;
+                    const data = JSON.parse(event.data);
+                    const message = data.message;
+                    const sender = data.userId;
                     console.log("Message received:", message); // Debugging message reception
+                    
                     const messageElement = document.createElement('div');
-                    messageElement.textContent = message;
+                    messageElement.className = 'message';
+                    messageElement.style.color = generateColorForUser(sender);
+                    messageElement.innerHTML = `<strong>${sender}:</strong> ${message}`;
                     messageList.appendChild(messageElement);
                     messageList.scrollTop = messageList.scrollHeight; // Scroll to the bottom
                 };
@@ -315,33 +331,39 @@
                 alert("Please enter your user ID.");
             }
         }
-
+    
         sendButton.addEventListener('click', () => {
             if (ws && messageInput.value) {
                 console.log("Sending message:", messageInput.value); // Debugging message sending
-                ws.send(messageInput.value);
+                const messageData = {
+                    message: messageInput.value,
+                    userId: userIdInput.value
+                };
+                ws.send(JSON.stringify(messageData));
                 messageInput.value = '';
             }
         });
-
+    
         messageInput.addEventListener('keypress', (event) => {
             if (event.key === 'Enter' && !event.shiftKey) {
                 event.preventDefault();
                 sendButton.click();
             }
         });
-
+    
         userIdInput.addEventListener('blur', connectWebSocket);
-
+    
+        // Display the popup when the page loads
         window.addEventListener('load', () => {
             popup.style.display = 'block';
             overlay.style.display = 'block';
         });
-
+    
+        // Close the popup when the OK button is clicked
         okButton.addEventListener('click', () => {
             popup.style.display = 'none';
             overlay.style.display = 'none';
         });
-    </script>
+    </script>    
 </body>
 </html>

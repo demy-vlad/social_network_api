@@ -4,8 +4,45 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Real-Time Chat Application - Connect & Communicate Instantly</title>
+
+    <!-- Meta Description for SEO -->
+    <meta name="description" content="Experience seamless communication with our real-time chat application. Connect, chat, and share instantly with friends or colleagues. Start chatting now!">
+
+    <!-- Meta Keywords for SEO -->
+    <meta name="keywords" content="real-time chat, online chat, instant messaging, web chat, communication tool, chat application">
+
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="Real-Time Chat Application - Connect & Communicate Instantly">
+    <meta property="og:description" content="Join our real-time chat application for instant communication with friends or colleagues. Start chatting now!">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.example.com/chat">
+    <meta property="og:image" content="https://www.example.com/images/chat-thumbnail.jpg">
+
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Real-Time Chat Application - Connect & Communicate Instantly">
+    <meta name="twitter:description" content="Join our real-time chat application for instant communication with friends or colleagues. Start chatting now!">
+    <meta name="twitter:image" content="https://www.example.com/images/chat-thumbnail.jpg">
+
+    <!-- Schema.org Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "url": "https://www.example.com/",
+      "name": "Real-Time Chat Application",
+      "description": "Experience seamless communication with our real-time chat application. Connect, chat, and share instantly with friends or colleagues.",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://www.example.com/search?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
+
     <!-- Bootstrap CSS -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -13,8 +50,10 @@
             padding: 0;
             background-color: #f8f9fa;
         }
+
         #chat-container {
             display: flex;
+            justify-content: flex-end;
             flex-direction: column;
             height: 100vh;
             max-width: 600px;
@@ -23,6 +62,49 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             background-color: #ffffff;
         }
+
+        /* Контейнер для выбора эмодзи */
+        #emoji-container {
+            display: flex;
+            flex-wrap: nowrap; /* Отображение в одну строку */
+            overflow-x: auto; /* Позволяет прокручивать, если эмодзи не помещаются */
+            margin-bottom: 10px;
+        }
+
+        /* Стили для эмодзи-блоков */
+        .emoji-block{
+            width: 78px;
+            height: 41px;
+            margin-right: 5px;
+            border: 2px solid #03A9F4;
+            border-radius: 30px;
+            display: flex;
+            font-size: 24px;
+            justify-content: space-around;
+            padding: 1px 0px 1px 1px;
+        }
+
+        .emoji-block:active {
+            background-color: #f5fcff;
+        }
+
+        /* Стили для текстового поля */
+        #message-input {
+            resize: vertical;
+            min-height: 50px;
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+
+        #send-button {
+            margin-top: 10px;
+            font-size: 16px;
+            padding: 10px;
+            border-radius: 8px;
+        }
+
         #message-list {
             flex: 1;
             overflow-y: auto;
@@ -31,24 +113,26 @@
             padding: 10px;
             background-color: #f8f9fa;
         }
+
         #message-form {
             display: flex;
             flex-direction: column;
             margin-top: 10px;
         }
+
         #message-input {
             resize: vertical;
             min-height: 100px;
             padding: 10px;
             font-size: 16px;
-            border-radius: 8px;
-            border: 1px solid #ddd;
         }
+
         #send-button {
             margin-top: 10px;
             font-size: 16px;
             padding: 10px;
         }
+
         #popup {
             display: none;
             position: fixed;
@@ -64,10 +148,12 @@
             width: 80%;
             max-width: 400px;
         }
+
         #popup button {
             padding: 10px 20px;
             width: 100%;
         }
+
         #overlay {
             display: none;
             position: fixed;
@@ -77,6 +163,74 @@
             height: 100%;
             background: rgba(0,0,0,0.5);
             z-index: 999;
+        }
+
+        @media (max-width: 768px) {
+            .emoji-block{
+                width: 78px;
+                height: 41px;
+                margin-right: 5px;
+                border: 2px solid #03A9F4;
+                border-radius: 30px;
+                display: flex;
+                font-size: 24px;
+                justify-content: space-around;
+                padding: 1px 7px 1px 1px;
+            }
+
+            #chat-container {
+                max-width: 100%;
+                height: 100vh;
+                margin: 0;
+                padding: 10px;
+            }
+
+            #message-input {
+                font-size: 14px;
+                min-height: 80px;
+            }
+
+            #send-button {
+                font-size: 14px;
+                padding: 8px;
+            }
+
+            #popup {
+                width: 90%;
+                max-width: 350px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .emoji-block{
+                width: 41px;
+                height: 41px;
+                margin-right: 5px;
+                border: 2px solid #03A9F4;
+                border-radius: 30px;
+                display: flex;
+                font-size: 24px;
+                justify-content: space-around;
+                padding: 1px 5px 1px 1px;
+            }
+            #chat-container {
+                padding: 5px;
+            }
+
+            #message-input {
+                font-size: 12px;
+                min-height: 60px;
+            }
+
+            #send-button {
+                font-size: 12px;
+                padding: 6px;
+            }
+
+            #popup {
+                width: 95%;
+                max-width: 300px;
+            }
         }
     </style>
 </head>
@@ -89,7 +243,18 @@
     </div>
     
     <div id="chat-container">
-        <div id="message-list"></div>
+        <div id="emoji-container">
+            <div type="button" class="emoji-block">😊</div>
+            <div type="button" class="emoji-block">😂</div>
+            <div type="button" class="emoji-block">😍</div>
+            <div type="button" class="emoji-block">😎</div>
+            <div type="button" class="emoji-block">😉</div>
+            <div type="button" class="emoji-block">😭</div>
+            <div type="button" class="emoji-block">😡</div>
+            <div type="button" class="emoji-block">👍</div>
+            <div type="button" class="emoji-block">🎉</div>
+        </div>
+        <div id="message-list"></div> <!-- Добавлено для отображения сообщений -->
         <form id="message-form" class="form-group">
             <textarea id="message-input" class="form-control mb-2" placeholder="Type your message..."></textarea>
             <button type="button" id="send-button" class="btn btn-primary mt-2">Send</button>
@@ -98,8 +263,8 @@
 
     <!-- Bootstrap JS and dependencies -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     
     <script>
         const emojiBlocks = document.querySelectorAll('.emoji-block');

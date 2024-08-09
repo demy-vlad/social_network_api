@@ -267,16 +267,6 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
     <script>
-        // Функция для генерации случайного цвета для пользователя
-        function generateColorForUser(userId) {
-            const colors = [
-                '#FF6347', '#4682B4', '#32CD32', '#FFD700', '#8A2BE2',
-                '#FF1493', '#00CED1', '#FF4500', '#2E8B57', '#D2691E'
-            ];
-            const index = userId.length % colors.length;
-            return colors[index];
-        }
-    
         const emojiBlocks = document.querySelectorAll('.emoji-block');
         const messageInput = document.getElementById('message-input');
     
@@ -316,7 +306,7 @@
                     
                     const messageElement = document.createElement('div');
                     messageElement.className = 'message';
-                    messageElement.style.color = generateColorForUser(sender);
+                    messageElement.style.color = '#007BFF'; // Фиксированный цвет для всех пользователей
                     messageElement.innerHTML = `<strong>${sender}:</strong> ${message}`;
                     messageList.appendChild(messageElement);
                     messageList.scrollTop = messageList.scrollHeight; // Scroll to the bottom
@@ -364,6 +354,8 @@
             popup.style.display = 'none';
             overlay.style.display = 'none';
         });
-    </script>    
+    </script>
+    
+    
 </body>
 </html>

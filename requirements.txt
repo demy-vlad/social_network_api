@@ -6,5 +6,4 @@ pydantic
 celery
 redis
 uvicorn[standard]
-fastapi  # If you're using FastAPI
-# Add other dependencies here
+fastapi

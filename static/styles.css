@@ -1,0 +1,217 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f8f9fa;
+}
+
+#chat-container {
+    display: flex;
+    justify-content: flex-end;
+    flex-direction: column;
+    height: 100vh;
+    max-width: 600px;
+    margin: auto;
+    padding: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background-color: #ffffff;
+}
+
+#input-container {
+    display: flex;
+    align-items: center;
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 25px;
+    padding: 5px 10px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+#message-input {
+    border: none;
+    outline: none;
+    resize: none;
+    font-size: 16px;
+    font-family: inherit;
+    background-color: transparent;
+    color: inherit;
+    box-shadow: none;
+    -webkit-appearance: none; /* Removes default styling in WebKit browsers */
+    -moz-appearance: none; /* Removes default styling in Mozilla browsers */
+    appearance: none; /* Removes default styling in other modern browsers */
+}
+
+#message-input::placeholder {
+    color: #999; /* Style the placeholder text */
+    font-family: inherit;
+}
+
+#input-container {
+    display: flex;
+    align-items: center;
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 25px;
+    padding: 5px 10px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+#send-button {
+    background-color: #03a9f400;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 50%;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-primary:focus {
+    box-shadow: 0 0 0 .2rem rgb(38 143 255 / 0%) !important
+}
+
+#emoji-container {
+    display: flex;
+    flex-wrap: nowrap; /* Отображение в одну строку */
+    overflow-x: auto; /* Позволяет прокручивать, если эмодзи не помещаются */
+}
+
+/* Стили для эмодзи-блоков */
+.emoji-block {
+    width: 78px;
+    height: 41px;
+    margin-right: 5px;
+    border: 2px solid #03A9F4;
+    border-radius: 30px;
+    display: flex;
+    font-size: 24px;
+    justify-content: space-around;
+    padding: 1px 0px 1px 1px;
+    margin: 10px;
+}
+
+.emoji-block:active {
+    background-color: #f5fcff;
+}
+
+#message-list {
+    flex: 1;
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 10px;
+    background-color: #f8f9fa;
+}
+
+#message-form {
+    display: flex;
+    flex-direction: column;
+}
+
+#popup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    z-index: 1000;
+    width: 80%;
+    max-width: 400px;
+}
+
+#popup button {
+    padding: 10px 20px;
+    width: 100%;
+}
+
+#overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    z-index: 999;
+}
+
+@media (max-width: 768px) {
+    .emoji-block {
+        width: 78px;
+        height: 41px;
+        margin-right: 5px;
+        border: 2px solid #03A9F4;
+        border-radius: 30px;
+        display: flex;
+        font-size: 24px;
+        justify-content: space-around;
+        padding: 1px 7px 1px 1px;
+    }
+
+    #chat-container {
+        max-width: 100%;
+        height: 100vh;
+        margin: 0;
+        padding: 10px;
+    }
+
+    #message-input {
+        font-size: 14px;
+        min-height: 80px;
+    }
+
+    #send-button {
+        font-size: 14px;
+        padding: 8px;
+    }
+
+    #popup {
+        width: 90%;
+        max-width: 350px;
+    }
+}
+
+@media (max-width: 480px) {
+    .emoji-block {
+        width: 41px;
+        height: 41px;
+        margin-right: 5px;
+        border: 2px solid #03A9F4;
+        border-radius: 30px;
+        display: flex;
+        font-size: 24px;
+        justify-content: space-around;
+        padding: 1px 5px 1px 1px;
+    }
+
+    #chat-container {
+        padding: 5px;
+    }
+
+    #message-input {
+        font-size: 12px;
+        min-height: 60px;
+    }
+
+    #send-button {
+        font-size: 12px;
+        padding: 6px;
+    }
+
+    #send-button:focus {
+        background-color: #03a9f400 !important;
+    }
+
+    #popup {
+        width: 95%;
+        max-width: 300px;
+    }
+}

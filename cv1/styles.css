@@ -1,0 +1,105 @@
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+.resume {
+    max-width: 800px;
+    margin: 20px auto;
+    background: #fff;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 20px;
+}
+
+.photo img {
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+}
+
+.contact-info {
+    margin-left: 20px;
+}
+
+.contact-info h1 {
+    margin: 0;
+    color: #0073aa;
+}
+
+.contact-info h2 {
+    margin: 5px 0;
+    font-weight: normal;
+}
+
+.contact-info p {
+    margin: 2px 0;
+}
+
+section {
+    margin-top: 20px;
+}
+
+h3 {
+    color: #0073aa;
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 5px;
+}
+
+.job, .edu {
+    margin-bottom: 15px;
+}
+
+.job h4, .edu h4 {
+    margin: 0;
+    color: #333;
+}
+
+.job h5, .edu h5 {
+    margin: 5px 0;
+    color: #666;
+}
+
+.references p, .skills ul {
+    margin: 5px 0;
+}
+
+.skills ul {
+    list-style: none;
+    padding: 0;
+}
+
+.skills li {
+    display: inline-block;
+    background: #0073aa;
+    color: #fff;
+    padding: 5px 10px;
+    margin: 5px 5px 0 0;
+    border-radius: 3px;
+}
+
+.download-btn {
+    display: block;
+    margin: 20px auto;
+    padding: 10px 20px;
+    background-color: #0073aa;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    text-align: center;
+}
+
+.download-btn:hover {
+    background-color: #005f8a;
+}
